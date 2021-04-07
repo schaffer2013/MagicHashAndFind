@@ -35,7 +35,7 @@ def save_image(path, url, name):
         s.mount('https://', HTTPAdapter(max_retries=retries))
         
         img=Image.open(s.get(url, stream=True).raw) #open image with PIL
-        img = ImageOps.expand(img, border=100, fill=200) # add border to help find outline
+        img = ImageOps.expand(img, border=20, fill=200) # add border to help find outline
         #print(name)
         output_image_file_and_path=output_image_file_and_path.replace("//","--")
         #print(name)
@@ -80,7 +80,7 @@ def get_all_cards(card_array):
     for card in card_array:
         id_ = card['id']
         #print(str(id_))
-        card = getCardByID(id_,5)
+        card = getCardByID(id_,15)
         card_list.append(card)
         if (len(card_list)%10==0 or len(card_list)==len(card_array)):
             print (len(card_list),'out of',len(card_array), 'cards found!')
@@ -94,8 +94,11 @@ class SetDownloader:
 
         card_list = get_all_pages(self.setName)
         print('Got all pages')
-
-        setPickle='./'+setName+'.dat'
+        
+        dirPickle='./pickleDump/'
+        if not os.path.isdir(dirPickle):
+            os.mkdir(dirPickle)
+        setPickle=dirPickle+setName+'.dat'
         if not os.path.isfile(setPickle):
             card_list_objects = get_all_cards(card_list)
             with open(setPickle, 'wb') as f:
@@ -107,6 +110,7 @@ class SetDownloader:
                 card_list_objects=pickle.load(file)
             print('Set loaded!')
         print('Got all cards')
+        self.numCards=len(card_list_objects)
         index=0
         for card in card_list_objects:
             try:
