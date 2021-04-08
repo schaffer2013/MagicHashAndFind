@@ -11,6 +11,8 @@ cardsCounted=0
 
 for i, set_object in enumerate(all_sets.data()):
     code=(all_sets.data(i, "code"))
+    if code=='con':
+        code='conf'
     lock_file=code + '.lck'
     start_time=datetime.datetime.now()
 
@@ -20,7 +22,7 @@ for i, set_object in enumerate(all_sets.data()):
         if not os.path.isfile(lock_file):
             with open(lock_file, 'w') as fp:
                 pass
-            s.startDownload(code,'image/'+code)
+            s.startDownload(all_sets.data(i, "name"),'image/'+code)
             saver=Saver('image/'+code,code)
             #s.deleteDirectory()
             end_time=datetime.datetime.now()

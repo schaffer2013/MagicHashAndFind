@@ -649,7 +649,9 @@ class MagicCardDetector:
         print(path)
         for filename in filenames:
             img = cv2.imread(filename)
-            img_name = filename.split(path)[1]
+            #print(filename)
+            fn=filename.replace('\\','/')
+            img_name = fn.split(path)[1]
             self.reference_images.append(
                 ReferenceImage(img_name, img, self.clahe))
         print('Done.')
